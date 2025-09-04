@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>Book Shelf</title>
+    <style>
+  body {
+    background-color: #000000;
+    margin: auto;
+  }
+     .fixed-color{
+  color: #FFA500 !important;
+}
+        .fixed-back{
+        background-color: #FFA500 !important;
+  border-color: #FFA500 !important;}
+</style>
+</head>
+<body>
+<div class="d-flex flex-column gap-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #FFA500;">
+  <!-- Назва -->
+  <h2 style="margin: 0;">📚 ТВОЯ<br> КНИЖКОВА<br> ПОЛИЦЯ</h2>
+  <!-- Іконка справа -->
+  <a href="/my_list">
+    <img src="static/bookmark.svg" alt="icon" style="width: 30px; height: 30px;">
+  </a>
+
+</div>
+    <form method="POST" action="/search">
+    <div class="text-center">
+    <input type="text" name="book" placeholder="Введіть назву книжки">
+        <button type="submit" class="btn btn-outline-warning fs-3 fixed-back">
+    <img src="static/search.svg" alt="Search" width="24" height="24">
+</button>
+    </div>
+    {% if books %}
+<div class="container">
+  <div class="row">
+    {% for book in books %}
+      <div class="col-md-3 mb-4"> <!-- 12 / 3 = 4 колонки -->
+        <div class="card h-100">
+          <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+  <img src="{{ book.thumbnail }}"
+       alt="Book cover"
+       onerror="this.style.display='none'; this.parentNode.innerHTML='<span class=\'text-muted\'>No cover</span>';">
+</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ book.name }}</h5>
+            <p class="card-text">Автор: {{ book.author }}</p>
+            <a href="#" class="btn btn-primary fixed-back">{{ book.description }}</a>
+               <form method="POST" action="/add">
+              <button type="button" class="btn btn-outline-warning fs-3"
+        onclick="addBook('{{ book.name }}', '{{ book.author }}', '{{ book.description }}', '{{ book.thumbnail }}')">
+    <img src="static/plus.svg" alt="Додати" width="24" height="24">
+</button>
+                   </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+        </form>
+</div>
+</body>
+<script>
+function addBook(name, author, description, thumbnail) {
+    // Створюємо об'єкт для передачі на сервер
+    const data = {
+        name: name,
+        author: author,
+        description: description,
+        thumbnail: thumbnail
+    };
+
+    fetch('/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'  // передаємо як JSON
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            alert('Книга додана!'); // або можна динамічно додати картку на сторінку
+        } else {
+            alert('Сталася помилка');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</html>
