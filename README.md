@@ -1,6 +1,6 @@
-# Book Explorer
+# Book Shelf
 
-**Book Explorer** is a web application built with Python, designed to help users search for books using the Google Books API and create a personal account to save books of interest. The application combines interactive search functionality with a personalized library, making it easy to discover and manage favorite books.
+**BookShelf** is a web application built with Python, designed to help users search for books using the Google Books API and create a personal account to save books of interest. The application combines interactive search functionality with a personalized library, making it easy to discover and manage favorite books.
 
 ---
 
